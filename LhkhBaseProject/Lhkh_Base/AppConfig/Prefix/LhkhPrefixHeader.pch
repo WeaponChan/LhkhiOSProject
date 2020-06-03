@@ -1,0 +1,51 @@
+//
+//  LhkhPrefixHeader.pch
+//  Lhkh_Base
+//
+//  Created by Weapon on 2018/11/21.
+//  Copyright © 2018 Lhkh. All rights reserved.
+//
+
+#ifndef LhkhPrefixHeader_pch
+#define LhkhPrefixHeader_pch
+
+//配置文件
+#import "LhkhConfig.h"
+
+//宏
+#import "Macro_UserDefaults.h"
+#import "Macro_Notification.h"
+#import "Macro_Color.h"
+#import "Macro_Font.h"
+#import "Macro_FileName.h"
+#import "Macro_Image.h"
+#import "Macro_APIKey.h"
+#import "Macro_Device.h"
+#import "Macro_ServiceAddress.h"
+
+//常用三方
+#import "MJRefresh.h"                   //下拉刷新
+#import "MJExtension.h"                 //模型转换
+#import "Masonry.h"                     //代码约束
+#import "IQKeyboardManager.h"           //键盘监听
+
+
+//工具
+#import "LhkhTipsManager.h"
+
+
+//常用分类
+#import "UIImageView+WebCache.h"        //SDWebImage
+#import "MBProgressHUD+Lhkh.h"         //加载弹框提示
+#import "UIColor+Lhkh.h"
+#import "UIView+Lhkh.h"
+#import "UIImage+Lhkh.h"
+#import "UIButton+Lhkh.h"
+#import "UILabel+Lhkh.h"
+#import "NSString+Lhkh.h"
+#import "UIAlertController+Lhkh.h"
+#import "UIBarButtonItem+Lhkh.h"
+#import "UINavigationBar+Lhkh.h"
+#import "UIViewController+LhkhNavigationController.h"
+     
+#endif /* LhkhPrefixHeader_pch */

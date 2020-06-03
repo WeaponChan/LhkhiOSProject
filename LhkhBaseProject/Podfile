@@ -1,0 +1,30 @@
+platform :ios,'9.0'
+target "Lhkh_Base" do
+  
+inhibit_all_warnings!
+
+pod 'AFNetworking' #网路框架
+
+pod 'MBProgressHUD' #菊花
+
+pod 'SDWebImage' #加载图片
+
+pod 'MJRefresh' #数据加载刷新
+pod 'MJExtension' #数据模型
+
+pod 'Masonry' #UI布局
+
+pod 'IQKeyboardManager' #监听键盘
+
+pod 'JQFMDB' #本地数据库
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+ target.build_configurations.each do |config|
+  if config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'].to_f < 9.0
+    config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '9.0'
+     end
+   end
+  end
+end
+end
