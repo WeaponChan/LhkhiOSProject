@@ -39,7 +39,7 @@ typedef LhkhBaseResponse *(^ResponseFormat)(LhkhBaseResponse *response);
 - (void)GET:(NSString *)urlString parameters:(id)parameters completion:(void (^)(LhkhBaseResponse *response))completion;
 
 
-/// 上传图片
+/// 上传图片/视频
 /// @param urlString url
 /// @param parameters 服务端需要的参数
 /// @param images 图片数组

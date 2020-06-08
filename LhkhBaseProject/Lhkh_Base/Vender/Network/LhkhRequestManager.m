@@ -19,18 +19,7 @@
 // post
 - (void)POST:(NSString *)urlString parameters:(id)parameters completion:(void (^)(LhkhBaseResponse *))completion
 {
-    if (!([urlString containsString:@"https://aip.baidubce.com"]||[urlString containsString:@"https://graph.qq.com"]||[urlString containsString:@"https://api.weixin.qq.com"])) {//百度ocr接口
-        if (parameters == nil) {
-            [self request:@"POST" URL:urlString parameters:nil completion:completion];
-        }else{
-            NSError *error;
-            NSData *data = [NSJSONSerialization dataWithJSONObject:parameters options:NSJSONWritingPrettyPrinted error:&error];
-            NSString *jsonStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            [self request:@"POST" URL:urlString parameters:jsonStr completion:completion];
-        }
-    }else{
-        [self request:@"POST" URL:urlString parameters:parameters completion:completion];
-    }
+    [self request:@"POST" URL:urlString parameters:parameters completion:completion];
 }
 
 //get
@@ -42,14 +31,7 @@
 #pragma mark - post & get
 - (void)request:(NSString *)method URL:(NSString *)urlString parameters:(id)parameters completion:(void (^)(LhkhBaseResponse *response))completion
 {
-
-    if (!([urlString containsString:@"https://aip.baidubce.com"]||[urlString containsString:@"https://graph.qq.com"]||[urlString containsString:@"https://api.weixin.qq.com"])) {////qq信息 或者百度OCR
-        urlString = APIURLStringConnect(urlString);
-        [self.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    }else{
-        [self.requestSerializer setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-    }
-    
+    [self.requestSerializer setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     urlString = [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     DLog(@"\n\n=======================Request Start=======================\n\n%@\n\n=======================Request Param=======================\n\n%@\n===========================================================\n\n",urlString,parameters);
     if (self.isLocal) {
@@ -276,8 +258,8 @@
     self.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", @"text/plain", @"application/xml", @"text/xml", @"*/*", nil];
 
     //设置传递数据类型
-//    [self.requestSerializer setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-    [self.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [self.requestSerializer setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+//    [self.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
 //    [self.requestSerializer setValue:@"multipart/form-data" forHTTPHeaderField:@"Content-Type"];
     self.currentNetworkStatus = AFNetworkReachabilityStatusUnknown;
     

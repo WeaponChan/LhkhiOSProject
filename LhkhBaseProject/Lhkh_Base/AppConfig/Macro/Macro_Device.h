@@ -37,9 +37,21 @@
 /*********************************************************************************/
 /*               screenSize             */
 /*********************************************************************************/
+
+
+// 是否横竖屏
+// 用户界面横屏了才会返回YES
+#define IS_LANDSCAPE UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])
+// 无论支不支持横屏，只要设备横屏了，就会返回YES
+#define IS_DEVICE_LANDSCAPE UIDeviceOrientationIsLandscape([[UIDevice currentDevice] orientation])
+
+// 屏幕宽高度，会根据横竖屏的变化而变化
 #define Screen_W        [[UIScreen mainScreen] bounds].size.width
 #define Screen_H        [[UIScreen mainScreen] bounds].size.height
 
+// 屏幕宽高度，跟横竖屏无关
+#define Device_Screen_W (IS_LANDSCAPE ? Screen_H : Screen_W)
+#define Device_Screen_H (IS_LANDSCAPE ? Screen_W : Screen_H)
 
 // iPhone4S 3.5吋
 #define IS_iPhone_4S ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 960), [[UIScreen mainScreen] currentMode].size) : NO)
