@@ -48,7 +48,9 @@
 {
     [self.view addSubview:self.playerView];
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.playerView playerViewWithUrl:@"https://file.qhcpxt.com:444/oss-sz-1/CourseVideo/20200603/7222fd8f-95c1-4d46-b27f-689a6645b1eb/637267769475237199.m3u8" WithTitle:@"测试" WithShouldAutoPlay:NO];
+//        [self.playerView playerViewWithUrl:@"https://file.qhcpxt.com:444/oss-sz-1/CourseVideo/20200603/7222fd8f-95c1-4d46-b27f-689a6645b1eb/637267769475237199.m3u8" WithTitle:@"测试" WithShouldAutoPlay:NO];
+        [self.playerView playerViewWithUrl:@"https://v.sporttery.cn/KJSP/2020.07.01.f4v.mp4" WithTitle:@"测试" WithShouldAutoPlay:NO];
+        
     });
 }
 

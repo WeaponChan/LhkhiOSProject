@@ -66,6 +66,14 @@
     
 }
 
+- (void)scene:(UIScene *)scene openURLContexts:(NSSet<UIOpenURLContext *> *)URLContexts API_AVAILABLE(ios(13.0))
+{
+    NSEnumerator *enumerator = [URLContexts objectEnumerator];
+    UIOpenURLContext *context;
+    while (context = [enumerator nextObject]) {
+        DLog(@"context.URL =====%@",context.URL);
+    }
+}
 
 - (void)initWithKeyWindow
 {

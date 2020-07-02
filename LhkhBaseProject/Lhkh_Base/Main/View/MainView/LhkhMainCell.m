@@ -77,7 +77,11 @@ static NSString * const kCellID = @"LhkhMainCell";
 
 - (void)configCellWithIndexPath:(NSIndexPath*)indexPath
 {
-    
+    if (indexPath.row==0) {
+        self.itemTL.text = @"IJKPlayer自定义样式测试";
+    }else if(indexPath.row==1){
+        self.itemTL.text = @"LhkhWeb测试";
+    }
 }
 #pragma mark - Private Methods
 
@@ -87,7 +91,6 @@ static NSString * const kCellID = @"LhkhMainCell";
 {
     if (!_itemTL) {
         _itemTL = [[UILabel alloc] init];
-        _itemTL.text = @"IJKPlayer自定义样式测试";
         _itemTL.textColor = Color_MainText;
         _itemTL.font = systemFontRegular(16);
     }

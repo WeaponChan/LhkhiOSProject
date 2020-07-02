@@ -98,7 +98,7 @@
     //设置适配横竖屏(设置四边固定,长宽灵活)
 //    playerVC.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 //    //设置播放视图的缩放模式
-//    playerVC.scalingMode = IJKMPMovieScalingModeAspectFit;
+    playerVC.scalingMode = IJKMPMovieScalingModeAspectFit;
     //设置自动播放
     playerVC.shouldAutoplay = shouldAutoPlay;
     self.autoresizesSubviews = YES;

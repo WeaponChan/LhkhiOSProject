@@ -28,6 +28,15 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+{
+    if ([url.scheme containsString:@"lhkhlinking"]) {
+        DLog(@"%@",url);
+        return YES;
+    }
+    return YES;
+}
+
 #pragma mark - UISceneSession lifecycle
 //创建新的场景会话时调用
 //使用此方法选择用于创建新场景的配置

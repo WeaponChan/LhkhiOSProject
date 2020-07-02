@@ -8,6 +8,7 @@
 
 #import "LhkhMainVC.h"
 #import "LhkhIJKPlayerVC.h"
+#import "LhkhWebVC.h"
 #import "LhkhMainCell.h"
 @interface LhkhMainVC ()<UITableViewDelegate,UITableViewDataSource>
 @property (strong, nonatomic)UITableView *tableView;
@@ -39,12 +40,13 @@
 #pragma mark - System Delegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    return 2;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     LhkhMainCell *cell = [LhkhMainCell cellWithTableView:tableView];
+    [cell configCellWithIndexPath:indexPath];
     return cell;
 }
 
@@ -56,7 +58,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.navigationController pushViewController:[LhkhIJKPlayerVC new] animated:YES];
+    if (indexPath.row==0) {
+        [self.navigationController pushViewController:[LhkhIJKPlayerVC new] animated:YES];
+    }else if(indexPath.row==1){
+        [self.navigationController pushViewController:[LhkhWebVC new] animated:YES];
+    }
+    
 }
 
 #pragma mark - Custom Delegate

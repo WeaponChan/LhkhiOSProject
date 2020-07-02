@@ -1,0 +1,55 @@
+/*圆圈导航*/
+.cycle_btn_a .cycle_div{
+	position: fixed;
+	background: #ff9900;
+    color: #fff;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 12px;
+}
+.cycle_btn_a .cycle_btn_a_other{
+	width: 40px;
+	height: 40px;
+}
+.cycle_btn_a .cycle_btn_a_center{
+ 	bottom: 60px;
+	right: 30px;
+	width: 50px;
+	height: 50px;
+}
+.cycle_btn_a .cycle_btn_a_one{
+ 	bottom: 123px;
+	right: 5px;
+}
+.cycle_btn_a .cycle_btn_a_two{
+ bottom: 125px;
+ right: 57px;
+}
+.cycle_btn_a .cycle_btn_a_three{
+ bottom: 92px;
+ right:98px;
+}
+.cycle_btn_a .cycle_btn_a_four{
+ bottom: 41px;
+ right: 97px;
+}
+.cycle_btn_a .cycle_btn_a_five{
+ bottom: 4px;
+ right: 60px;
+}
+.cycle_btn_a .cycle_btn_a_center p{
+	line-height: 15px !important;
+}
+.cycle_btn_a .cycle_btn_a_other p {
+	line-height: 13px !important;
+}	
+.cycle_btn_a .cycle_btn_a_center p:FIRST-CHILD {
+	margin-top: 10px;
+}
+.cycle_btn_a .cycle_btn_a_other p:FIRST-CHILD {
+	margin-top: 6px;
+}	
+
+.cycle_btn_a .noshow{
+	display: none;	
+}
