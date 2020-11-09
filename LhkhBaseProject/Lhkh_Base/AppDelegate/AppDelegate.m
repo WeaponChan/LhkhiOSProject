@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "LhkhKeyWindowManager.h"
+#import "LhkhCatchCrashTool.h"
 @interface AppDelegate ()
 
 @end
@@ -16,6 +17,10 @@
 //应用程序启动后进行自定义     
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    //注册异常消息处理函数的处理方法
+    g_vaildUncaughtExceptionHandler = NSGetUncaughtExceptionHandler();
+    NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
+    
     [self initWithKeyWindow];
     return YES;
 }
@@ -37,6 +42,13 @@
     return YES;
 }
 
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler
+{
+
+    //其他第三方回调；
+     return YES;
+}
+
 #pragma mark - UISceneSession lifecycle
 //创建新的场景会话时调用
 //使用此方法选择用于创建新场景的配置
@@ -54,6 +66,9 @@
 }
 
 
+
+
+//初始化keywindow
 - (void)initWithKeyWindow
 {
     if (@available(iOS 13.0, *)) {

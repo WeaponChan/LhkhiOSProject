@@ -81,6 +81,12 @@ static NSString * const kCellID = @"LhkhMainCell";
         self.itemTL.text = @"IJKPlayer自定义样式测试";
     }else if(indexPath.row==1){
         self.itemTL.text = @"LhkhWeb测试";
+    }else if(indexPath.row==2){
+        self.itemTL.text = @"iOS 14选择图片";
+    }else if(indexPath.row==3){
+        self.itemTL.text = @"crash收集";
+    }else if(indexPath.row==4){
+        self.itemTL.text = @"扫描条码/二维码";
     }
 }
 #pragma mark - Private Methods

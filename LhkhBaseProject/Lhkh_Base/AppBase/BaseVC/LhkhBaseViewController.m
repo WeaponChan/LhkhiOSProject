@@ -52,7 +52,10 @@
     return UIModalPresentationFullScreen;
 }
 #pragma mark - Layout SubViews
-
+- (void)setSubView
+{
+    
+}
 
 #pragma mark - System Delegate
 

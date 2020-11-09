@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <meta content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" name="viewport">
+</head>
+<body>
+    <button id="btn">点我</button>
+    <script>
+        window.onload = function () {
+            //let file = document.getElementById("file");
+            //file.onchange = function () {
+            //    alert(this.files.length);
+            //};
+
+            document.getElementById("btn").onclick = function () {
+                chooseImage();
+            };
+
+        };
+
+        function chooseImage() {
+            var inputObj = document.createElement('input');
+            //inputObj.addEventListener('change', readFile, false);
+            inputObj.type = 'file';
+            inputObj.accept = 'image/*';
+            inputObj.id = "file";
+            alert(111);
+            inputObj.onchange = function () {
+                alert(this.files.length);
+                alert(222);
+            };
+            alert(333);
+            document.body.appendChild(inputObj);
+            inputObj.click();
+        }
+    </script>
+</body>
+</html>

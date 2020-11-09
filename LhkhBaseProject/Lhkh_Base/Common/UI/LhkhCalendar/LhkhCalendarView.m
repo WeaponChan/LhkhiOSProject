@@ -219,24 +219,10 @@
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy.MM.dd"];
     NSString *datenowStr = [formatter stringFromDate:datenow];
-    if ([dateStr isEqualToString:datenowStr]) {
-        self.selectLable.text = @"开奖直播";
-    }else{
-        self.selectLable.text = @"往期开奖";
-    }
     
-    NSString *weekS = [self getCurrentTimeAndWeekDay:[NSString stringWithFormat:@"%@%@日",self.titleLable.text,days]];
-    if ([weekS isEqualToString:@"星期一"]||[weekS isEqualToString:@"星期三"]||[weekS isEqualToString:@"星期六"]) {
-        self.lotLable.text = @"超级大乐透、排列三、排列五";
-    }else if([weekS isEqualToString:@"星期四"]){
-        self.lotLable.text = @"排列三、排列五";
-    }else{
-        self.lotLable.text = @"七星彩、排列三、排列五";
-    }
-  
-    if ([self.delegate respondsToSelector:@selector(LhkhCalendarViewDelegate:)]) {
-        [self.delegate LhkhCalendarViewDelegate:dateStr];
-    }
+    
+    NSString *weekS = [self getCurrentTimeAndWeekDay:[NSString stringWithFormat:@"%@%@日",self.titleLable.text,days]];//获取到星期几
+    
 }
 
 - (void)handleSwipeFrom:(UISwipeGestureRecognizer*)recognizer
@@ -382,14 +368,7 @@
     _firstDays = [self getFirstDayOfMonth:date];
     
     self.titleLable.text = [NSString stringWithFormat:@"%zd年%zd月",[self getCurrentYear:date],[self getCurrentMonth:date]];
-    NSString *weekS = [self getCurrentTimeAndWeekDay:[NSString stringWithFormat:@"%@%zd日",self.titleLable.text,[self getCurrentDay:date]]];
-    if ([weekS isEqualToString:@"星期一"]||[weekS isEqualToString:@"星期三"]||[weekS isEqualToString:@"星期六"]) {
-        self.lotLable.text = @"超级大乐透、排列三、排列五";
-    }else if([weekS isEqualToString:@"星期四"]){
-        self.lotLable.text = @"排列三、排列五";
-    }else{
-        self.lotLable.text = @"七星彩、排列三、排列五";
-    }
+    NSString *weekS = [self getCurrentTimeAndWeekDay:[NSString stringWithFormat:@"%@%zd日",self.titleLable.text,[self getCurrentDay:date]]];//获取到星期几
     
     
     if (12==[self getCurrentMonth:date]&&[self getCurrentYear:date]==[self getCurrentYear:[NSDate date]]) {
@@ -446,13 +425,13 @@
                 self.preBtn.enabled = YES;
                 self.nextBtn.enabled = NO;
                 if (i == [self getCurrentDay:[NSDate date]]) {
-                    [button setTitle:[NSString stringWithFormat:@"%ld\n直播",i] forState:UIControlStateNormal];
+                    [button setTitle:[NSString stringWithFormat:@"%ld\n今天",i] forState:UIControlStateNormal];
                     button.layer.borderColor = Color_Theme_Red.CGColor;
                     button.layer.borderWidth = 1;
                     LhkhViewCorner(button,(Screen_W-10)/14);
                     _selectBtn = button;
                     [button setTitleColor:Color_Theme_Red forState:UIControlStateNormal];
-                    self.selectLable.text = @"开奖直播";
+                    self.selectLable.text = @"今天";
                     
                 }else if(i > [self getCurrentDay:[NSDate date]]){
                     button.enabled = NO;

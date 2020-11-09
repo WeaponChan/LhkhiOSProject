@@ -10,11 +10,10 @@
 
 
 @implementation UIImage (Lhkh)
-
+#pragma mark - 根据颜色返回图片
 +(UIImage *)imageWithColor:(UIColor *)aColor{
     return [UIImage imageWithColor:aColor withFrame:CGRectMake(0, 0, 1, 1)];
 }
-
 +(UIImage *)imageWithColor:(UIColor *)aColor withFrame:(CGRect)aFrame{
     UIGraphicsBeginImageContext(aFrame.size);
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -25,8 +24,18 @@
     return img;
 }
 
+#pragma mark -禁止系统渲染图片
++ (UIImage *)renderingModelOriginalWithImageName:(NSString *)imageName
+{
+    return [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+}
++ (UIImage *)renderingModelOriginalWithImage:(UIImage *)image
+{
+    return [image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+}
 
-//对图片尺寸进行压缩--
+
+#pragma mark -对图片进行指定尺寸压缩
 -(UIImage*)scaledToSize:(CGSize)targetSize
 {
     UIImage *sourceImage = self;
@@ -57,13 +66,14 @@
     UIGraphicsEndImageContext();
     return newImage;
 }
+//尺寸压缩是否需要高质量
 -(UIImage*)scaledToSize:(CGSize)targetSize highQuality:(BOOL)highQuality{
     if (highQuality) {
         targetSize = CGSizeMake(2*targetSize.width, 2*targetSize.height);
     }
     return [self scaledToSize:targetSize];
 }
-
+//最大缩放
 -(UIImage *)scaledToMaxSize:(CGSize)size{
     
     CGFloat width = size.width;
@@ -91,83 +101,10 @@
     return newImage;
 }
 
-
-+ (UIImage *)imageWithFileType:(NSString *)fileType{
-    fileType = [fileType lowercaseString];
-    NSString *iconName;
-    //XXX(s)
-    if ([fileType hasPrefix:@"doc"]) {
-        iconName = @"icon_file_doc";
-    }else if ([fileType hasPrefix:@"ppt"]) {
-        iconName = @"icon_file_ppt";
-    }else if ([fileType hasPrefix:@"pdf"]) {
-        iconName = @"icon_file_pdf";
-    }else if ([fileType hasPrefix:@"xls"]) {
-        iconName = @"icon_file_xls";
-    }
-    //XXX
-    else if ([fileType isEqualToString:@"txt"]) {
-        iconName = @"icon_file_txt";
-    }else if ([fileType isEqualToString:@"ai"]) {
-        iconName = @"icon_file_ai";
-    }else if ([fileType isEqualToString:@"apk"]) {
-        iconName = @"icon_file_apk";
-    }else if ([fileType isEqualToString:@"md"]) {
-        iconName = @"icon_file_md";
-    }else if ([fileType isEqualToString:@"psd"]) {
-        iconName = @"icon_file_psd";
-    }
-    //XXX||YYY
-    else if ([fileType isEqualToString:@"zip"] || [fileType isEqualToString:@"rar"] || [fileType isEqualToString:@"arj"]) {
-        iconName = @"icon_file_zip";
-    }else if ([fileType isEqualToString:@"html"]
-              || [fileType isEqualToString:@"xml"]
-              || [fileType isEqualToString:@"java"]
-              || [fileType isEqualToString:@"h"]
-              || [fileType isEqualToString:@"m"]
-              || [fileType isEqualToString:@"cpp"]
-              || [fileType isEqualToString:@"json"]
-              || [fileType isEqualToString:@"cs"]
-              || [fileType isEqualToString:@"go"]) {
-        iconName = @"icon_file_code";
-    }else if ([fileType isEqualToString:@"avi"]
-              || [fileType isEqualToString:@"rmvb"]
-              || [fileType isEqualToString:@"rm"]
-              || [fileType isEqualToString:@"asf"]
-              || [fileType isEqualToString:@"divx"]
-              || [fileType isEqualToString:@"mpeg"]
-              || [fileType isEqualToString:@"mpe"]
-              || [fileType isEqualToString:@"wmv"]
-              || [fileType isEqualToString:@"mp4"]
-              || [fileType isEqualToString:@"mkv"]
-              || [fileType isEqualToString:@"vob"]) {
-        iconName = @"icon_file_movie";
-    }else if ([fileType isEqualToString:@"mp3"]
-              || [fileType isEqualToString:@"wav"]
-              || [fileType isEqualToString:@"mid"]
-              || [fileType isEqualToString:@"asf"]
-              || [fileType isEqualToString:@"mpg"]
-              || [fileType isEqualToString:@"tti"]) {
-        iconName = @"icon_file_music";
-    }
-    //unknown
-    else{
-        iconName = @"icon_file_unknown";
-    }
-    return [UIImage imageNamed:iconName];
+//缩放比例
+- (NSData *)dataForCodingUpload{
+    return [self dataSmallerThan:1024 * 1000];
 }
-
-+ (UIImage *)js_renderingModelOriginalWithImageName:(NSString *)imageName
-{
-    return [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-}
-
-+ (UIImage *)js_renderingModelOriginalWithImage:(UIImage *)image
-{
-    return [image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-}
-
-
 - (NSData *)dataSmallerThan:(NSUInteger)dataLength{
     CGFloat compressionQuality = 1.0;
     NSData *data = UIImageJPEGRepresentation(self, compressionQuality);
@@ -179,8 +116,76 @@
     return data;
 }
 
-- (NSData *)dataForCodingUpload{
-    return [self dataSmallerThan:1024 * 1000];
+#pragma mark - 图片旋转问题
+- (UIImage *)fixOrientation
+{
+    if (self.imageOrientation == UIImageOrientationUp) return self;
+    CGAffineTransform transform = CGAffineTransformIdentity;
+    
+    switch (self.imageOrientation) {
+        case UIImageOrientationDown:
+        case UIImageOrientationDownMirrored:
+            transform = CGAffineTransformTranslate(transform, self.size.width, self.size.height);
+            transform = CGAffineTransformRotate(transform, M_PI);
+            break;
+            
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+            transform = CGAffineTransformTranslate(transform, self.size.width, 0);
+            transform = CGAffineTransformRotate(transform, M_PI_2);
+            break;
+            
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            transform = CGAffineTransformTranslate(transform, 0, self.size.height);
+            transform = CGAffineTransformRotate(transform, -M_PI_2);
+            break;
+        case UIImageOrientationUp:
+        case UIImageOrientationUpMirrored:
+            break;
+    }
+    
+    switch (self.imageOrientation) {
+        case UIImageOrientationUpMirrored:
+        case UIImageOrientationDownMirrored:
+            transform = CGAffineTransformTranslate(transform, self.size.width, 0);
+            transform = CGAffineTransformScale(transform, -1, 1);
+            break;
+            
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRightMirrored:
+            transform = CGAffineTransformTranslate(transform, self.size.height, 0);
+            transform = CGAffineTransformScale(transform, -1, 1);
+            break;
+        case UIImageOrientationUp:
+        case UIImageOrientationDown:
+        case UIImageOrientationLeft:
+        case UIImageOrientationRight:
+            break;
+    }
+
+    CGContextRef ctx = CGBitmapContextCreate(NULL, self.size.width, self.size.height,
+                                             CGImageGetBitsPerComponent(self.CGImage), 0,
+                                             CGImageGetColorSpace(self.CGImage),
+                                             CGImageGetBitmapInfo(self.CGImage));
+    CGContextConcatCTM(ctx, transform);
+    switch (self.imageOrientation) {
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            CGContextDrawImage(ctx, CGRectMake(0,0,self.size.height,self.size.width), self.CGImage);
+            break;
+            
+        default:
+            CGContextDrawImage(ctx, CGRectMake(0,0,self.size.width,self.size.height), self.CGImage);
+            break;
+    }
+    CGImageRef cgimg = CGBitmapContextCreateImage(ctx);
+    UIImage *img = [UIImage imageWithCGImage:cgimg];
+    CGContextRelease(ctx);
+    CGImageRelease(cgimg);
+    return img;
 }
 
 @end

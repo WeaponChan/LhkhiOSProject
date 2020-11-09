@@ -9,6 +9,7 @@
 #import "LhkhWebVC.h"
 #import <WebKit/WebKit.h>
 @interface LhkhWebVC ()<WKUIDelegate,WKNavigationDelegate,WKScriptMessageHandler,UIScrollViewDelegate>
+@property (strong, nonatomic)UILabel *navTL;
 @property (strong, nonatomic)WKWebView *webView;
 @property (strong, nonatomic)CALayer *progressLayer;
 @end
@@ -21,6 +22,8 @@
 {
     [super viewDidLoad];
     self.navigationItem.title = @"LhkhWebVC";
+    [self lhkh_removeNavigationBar];
+    self.cancelGesture = YES;
     [self setNav];
     [self setSubView];
 }
@@ -35,24 +38,27 @@
 #pragma mark - Layout SubViews
 - (void)setNav
 {
-//    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//    [backBtn addTarget:self action:@selector(goBackClick) forControlEvents:UIControlEventTouchUpInside];
-//    [backBtn setImage:[UIImage imageNamed:@"back_white"] forState:UIControlStateNormal];
-//    [backBtn sizeToFit];
-//    UIBarButtonItem *back = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
-//
-//    UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-//    space.width = 10;
-//
-//    UIButton *popBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//    [popBtn addTarget:self action:@selector(popClick) forControlEvents:UIControlEventTouchUpInside];
-//    [popBtn setImage:[UIImage imageNamed:@"cha_white"] forState:UIControlStateNormal];
-//    [popBtn sizeToFit];
-//    UIBarButtonItem *pop = [[UIBarButtonItem alloc] initWithCustomView:popBtn];
-//    self.navigationItem.leftBarButtonItems = @[back,space,pop];
+    UIView *navV = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Screen_W, NavigationBar_H)];
+    navV.backgroundColor  = Color_NaviBg;
+    [self.view addSubview:navV];
     
-    self.navigationItem.leftBarButtonItem = [UIBarButtonItem lhkh_itemWithImage:@"back_white" highImage:@"back_white" target:self action:@selector(goBackClick)];
-    self.navigationItem.rightBarButtonItem = [UIBarButtonItem lhkh_itemWithImage:@"cha_white" highImage:@"cha_white" target:self action:@selector(popClick)];
+    UILabel *navTL = [[UILabel alloc]initWithFrame:CGRectMake((Screen_W-200)/2, StatusBar_H+5, 200, 30)];
+    navTL.textColor = Color_White;
+    navTL.font = systemFontRegular(20);
+    navTL.textAlignment = NSTextAlignmentCenter;
+    [navV addSubview:navTL];
+    self.navTL = navTL;
+    UIButton *backBtn = [[UIButton alloc]initWithFrame:CGRectMake(20, StatusBar_H+10, 30, 30)];
+    [backBtn addTarget:self action:@selector(goBackClick) forControlEvents:UIControlEventTouchUpInside];
+    [backBtn setImage:[UIImage imageNamed:@"back_white"] forState:UIControlStateNormal];
+    [backBtn sizeToFit];
+    [navV addSubview:backBtn];
+    
+    UIButton *popBtn = [[UIButton alloc]initWithFrame:CGRectMake(60, StatusBar_H+10, 30, 30)];
+    [popBtn addTarget:self action:@selector(popClick) forControlEvents:UIControlEventTouchUpInside];
+    [popBtn setImage:[UIImage imageNamed:@"cha_white"] forState:UIControlStateNormal];
+    [popBtn sizeToFit];
+    [navV addSubview:popBtn];
 }
 
 - (void)setSubView
@@ -60,14 +66,14 @@
     [self.view addSubview:self.webView];
     [self reloadwebView];
     //进度条
-    UIView * progress = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 3)];
+    UIView * progress = [[UIView alloc] initWithFrame:CGRectMake(0, NavigationBar_H, CGRectGetWidth(self.view.frame), 3)];
     progress.backgroundColor = Color_Clear;
     [self.view addSubview:progress];
         
     //隐式动画
     CALayer * layer = [CALayer layer];
     layer.frame = CGRectMake(0, 0, 0, 3);
-    layer.backgroundColor = Color_Theme_Red.CGColor;
+    layer.backgroundColor = Color_NaviBg.CGColor;
     [progress.layer addSublayer:layer];
     self.progressLayer = layer;
 }
@@ -90,7 +96,7 @@
 // 页面加载完成之后调用
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
 {
-//    [self getCookie];
+
 }
 //提交发生错误时调用
 - (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
@@ -109,13 +115,13 @@
     NSString * urlStr = navigationAction.request.URL.absoluteString;
     DLog(@"发送跳转请求：%@",urlStr);
     //自己定义的协议头
-    NSString *htmlHeadString = @"github://";
+    NSString *htmlHeadString = @"test://";
     if([urlStr hasPrefix:htmlHeadString]){
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"通过截取URL调用OC" message:@"你想前往我的Github主页?" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"通过截取URL调用OC" message:@"你想前往我的test页面?" preferredStyle:UIAlertControllerStyleAlert];
         [alertController addAction:([UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         }])];
         [alertController addAction:([UIAlertAction actionWithTitle:@"打开" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            NSURL * url = [NSURL URLWithString:[urlStr stringByReplacingOccurrencesOfString:@"github://callName_?" withString:@""]];
+            NSURL * url = [NSURL URLWithString:[urlStr stringByReplacingOccurrencesOfString:@"test://xxx" withString:@""]];
             [[UIApplication sharedApplication] openURL:url];
         }])];
         [self presentViewController:alertController animated:YES completion:nil];
@@ -129,7 +135,7 @@
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler
 {
     NSString * urlStr = navigationResponse.response.URL.absoluteString;
-    NSLog(@"当前跳转地址：%@",urlStr);
+    DLog(@"当前跳转地址：%@",urlStr);
     //允许跳转
     decisionHandler(WKNavigationResponsePolicyAllow);
     //不允许跳转
@@ -226,13 +232,10 @@
 #pragma mark - Event Response
 - (void)goBackClick
 {
-    DLog(@"222");
-    WKBackForwardList * backForwardList = [_webView backForwardList];
-    DLog(@"%ld",backForwardList.backList.count);
-    if (backForwardList.backList.count>=2) {
-        [_webView goBack];
+    if (self.webView.canGoBack==YES) {
+        [self.webView goBack];
     }else{
-        [self reloadwebView];
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 
@@ -243,18 +246,18 @@
 #pragma mark - Network Requests
 - (void)reloadwebView
 {
-    NSString *path = [[NSBundle mainBundle] resourcePath];
-    NSURL *baseURL = [NSURL fileURLWithPath:path];
-    NSString *filePath = [[NSBundle mainBundle]pathForResource:@"home" ofType:@"html"];
-    NSURL *url = [NSURL fileURLWithPath:filePath];
-    NSString *htmlStr = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
-    //加载本地html文件
-    [self.webView loadHTMLString:htmlStr baseURL:baseURL];
+//    NSString *path = [[NSBundle mainBundle] resourcePath];
+//    NSURL *baseURL = [NSURL fileURLWithPath:path];
+//    NSString *filePath = [[NSBundle mainBundle]pathForResource:@"selectimg" ofType:@"html"];
+//    NSURL *url = [NSURL fileURLWithPath:filePath];
+//    NSString *htmlStr = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
+//    //加载本地html文件
+//    [self.webView loadHTMLString:htmlStr baseURL:baseURL];
     
     //加载网络html
-    //NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.baidu.com"]];
-    //[request addValue:[self readCurrentCookieWithDomain:@"https://www.baidu.com"] forHTTPHeaderField:@"Cookie"];
-    //[self.webView loadRequest:request];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://lotapi.yjkj.ltd/view/home/home.html"] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:1];
+//    [request addValue:[self readCurrentCookieWithDomain:@"https://cloud.bankofchina.com"] forHTTPHeaderField:@"Cookie"];
+    [self.webView loadRequest:request];
 }
 
 #pragma mark - Public Methods
@@ -275,7 +278,7 @@
             });
         }
     }else if([keyPath isEqualToString:@"title"]){
-        self.navigationItem.title = _webView.title;
+        self.navTL.text = _webView.title;
     }else{
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
@@ -358,7 +361,7 @@
         //设置是否允许画中画技术 在特定设备上有效
         config.allowsPictureInPictureMediaPlayback = YES;
         //设置请求的User-Agent信息中应用程序名称 iOS9后可用
-        config.applicationNameForUserAgent = @"TC";
+        config.applicationNameForUserAgent = @"Lhkh_Base";
         //这个类主要用来做native与JavaScript的交互管理
         WKUserContentController * wkUController = [[WKUserContentController alloc] init];
         //注册一个name为jsToOcNoPrams的js方法

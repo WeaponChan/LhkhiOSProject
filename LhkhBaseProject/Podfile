@@ -18,6 +18,8 @@ pod 'IQKeyboardManager' #监听键盘
 
 pod 'JQFMDB' #本地数据库
 
+pod 'ZXingObjC' #扫描
+
 post_install do |installer|
   installer.pods_project.targets.each do |target|
  target.build_configurations.each do |config|

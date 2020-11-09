@@ -10,6 +10,9 @@
 #import "LhkhScanMaskView.h"
 #import <AVFoundation/AVFoundation.h>
 #import <ImageIO/ImageIO.h>
+
+#import <ZXingObjC/ZXingObjC.h>
+
 #import "LhkhKeyWindowManager.h"
 @interface LhkhScanVC ()<AVCaptureMetadataOutputObjectsDelegate,LhkhScanMaskViewDelegate>
 {
@@ -72,7 +75,7 @@
     
     CGRect rect = CGRectMake(0, 0, 0, 0);
     
-    if ([self.type isEqualToString:@"lottery"]) {//扫彩票pdf-417码的
+    if ([self.type isEqualToString:@"pdf417"]) {//扫彩票pdf-417码的
         rect = CGRectMake((Screen_W - (Screen_W * 0.93)) * 0.5, (Screen_H - (Screen_W * 0.25)) * 0.4, Screen_W * 0.93, Screen_W * 0.4);
     }else{//普通二维码
         rect = CGRectMake(0.16, (Screen_H - (Screen_W * 0.68)) * 0.5, Screen_W * 0.68, Screen_W * 0.68);
@@ -88,24 +91,24 @@
     metadataOutput.rectOfInterest = CGRectMake(x, y, width, height);
     
     //初始化链接对象
-    self.session = [[AVCaptureSession alloc] init];
-    //高质量采集率
-    self.session.sessionPreset = AVCaptureSessionPresetHigh;
-    
-    [self.session addInput:input];
-    [self.session addOutput:metadataOutput];
-    
-    self.previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:self.session];
-    self.previewLayer.frame = CGRectMake(0, 0, Screen_W, Screen_H);
-    self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-    self.previewLayer.backgroundColor = [UIColor yellowColor].CGColor;
-    [self.view.layer addSublayer:self.previewLayer];
-    
-    //设置扫描支持的编码格式(如下设置条形码和二维码兼容)
-    metadataOutput.metadataObjectTypes = self.metadataObjectTypes;
-    
-    //开始捕获
-    [self.session startRunning];
+//    self.session = [[AVCaptureSession alloc] init];
+//    //高质量采集率
+//    self.session.sessionPreset = AVCaptureSessionPresetHigh;
+//
+//    [self.session addInput:input];
+//    [self.session addOutput:metadataOutput];
+//
+//    self.previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:self.session];
+//    self.previewLayer.frame = CGRectMake(0, 0, Screen_W, Screen_H);
+//    self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+//    self.previewLayer.backgroundColor = [UIColor yellowColor].CGColor;
+//    [self.view.layer addSublayer:self.previewLayer];
+//
+//    //设置扫描支持的编码格式(如下设置条形码和二维码兼容)
+//    metadataOutput.metadataObjectTypes = self.metadataObjectTypes;
+//
+//    //开始捕获
+//    [self.session startRunning];
 }
 
 #pragma mark - System Delegate
@@ -138,6 +141,10 @@
 
 #pragma mark - Public Methods
 
+- (void)handZXingResult:(ZXBarcodeFormat)barcodeFormat barStr:(NSString*)str scanImg:(UIImage*)scanImg resultPoints:(NSArray*)resultPoints
+{
+    NSLog(@"ZXing pts:%@",resultPoints);
+}
 
 #pragma mark - Private Methods
 - (void)checkCamera

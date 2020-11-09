@@ -9,7 +9,14 @@
 #import "LhkhMainVC.h"
 #import "LhkhIJKPlayerVC.h"
 #import "LhkhWebVC.h"
+#import "LhkhScanVC.h"
+#import "LhkhZxingScanVC.h"
+
 #import "LhkhMainCell.h"
+
+
+#import "UIScrollView+LhkhPullBig.h"
+
 @interface LhkhMainVC ()<UITableViewDelegate,UITableViewDataSource>
 @property (strong, nonatomic)UITableView *tableView;
 @end
@@ -21,6 +28,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self lhkh_removeNavigationBar];
     self.navigationItem.title = @"Lhkh主页";
     [self setSubView];
     
@@ -30,17 +38,26 @@
 #pragma mark - Layout SubViews
 - (void)setSubView
 {
+    
+    
     [self.view addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(NavigationBar_H+10);
-        make.leading.bottom.trailing.equalTo(self.view);
+        make.top.equalTo(self.view);
+        make.leading.equalTo(self.view);
+        make.trailing.equalTo(self.view);
+        make.bottom.equalTo(self.view);
     }];
+    
+    UIImageView *image = [[UIImageView alloc] initWithImage:Image(@"1.jpg")];
+    image.frame = CGRectMake(0, 0, Screen_W, 240);
+    UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Screen_W, 240)];
+    [self.tableView setBigView:image withHeaderView:header];
 }
 
 #pragma mark - System Delegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+    return 5;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -62,7 +79,15 @@
         [self.navigationController pushViewController:[LhkhIJKPlayerVC new] animated:YES];
     }else if(indexPath.row==1){
         [self.navigationController pushViewController:[LhkhWebVC new] animated:YES];
+    }else if(indexPath.row==4){
+        LhkhZxingScanVC *vc = [LhkhZxingScanVC new];
+//        vc.type = @"pdf417";
+        [self.navigationController pushViewController:vc animated:YES];
     }
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
     
 }
 

@@ -89,8 +89,8 @@
     [[UITabBarItem appearance] setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12]} forState:UIControlStateNormal];
     [[UITabBarItem appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:Color_Theme_Red,NSFontAttributeName:[UIFont systemFontOfSize:14]} forState:UIControlStateSelected];
     
-    viewController.tabBarItem.image = viewController.tabBarItem.selectedImage = [UIImage js_renderingModelOriginalWithImageName:image];
-    viewController.tabBarItem.selectedImage = [UIImage js_renderingModelOriginalWithImageName:selectedImage];
+    viewController.tabBarItem.image = viewController.tabBarItem.selectedImage = [UIImage renderingModelOriginalWithImageName:image];
+    viewController.tabBarItem.selectedImage = [UIImage renderingModelOriginalWithImageName:selectedImage];
     
     [self addChildViewController:viewController];
 }

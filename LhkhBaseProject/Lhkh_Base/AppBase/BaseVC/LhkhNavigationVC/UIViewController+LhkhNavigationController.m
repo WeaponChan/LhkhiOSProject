@@ -93,10 +93,38 @@
     self.navigationBar = navigationBar;
     [self.view addSubview:navigationBar];
     self.lhkh_navigation_item = [[LhkhNavigationItem alloc]init];
+    
     if (self.lhkh_navigationController.childViewControllers.count>1) {
        self.lhkh_navigation_item.leftBarButtonItem = [UIBarButtonItem lhkh_itemWithImage:@"back_white" highImage:@"back_white" target:self action:@selector(didTapBackButton)];
+        
+        
+//        UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [backBtn addTarget:self action:@selector(goBackClick) forControlEvents:UIControlEventTouchUpInside];
+//        [backBtn setImage:[UIImage imageNamed:@"back_white"] forState:UIControlStateNormal];
+//        [backBtn sizeToFit];
+//        UIBarButtonItem *back = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
+//
+//        UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+//        space.width = 10;
+//
+//        UIButton *popBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [popBtn addTarget:self action:@selector(popClick) forControlEvents:UIControlEventTouchUpInside];
+//        [popBtn setImage:[UIImage imageNamed:@"cha_white"] forState:UIControlStateNormal];
+//        [popBtn sizeToFit];
+//        UIBarButtonItem *pop = [[UIBarButtonItem alloc] initWithCustomView:popBtn];
+//        self.lhkh_navigation_item.leftBarButtonItems = @[back,space,pop];
     }
     navigationBar.items=@[self.lhkh_navigation_item];
+}
+
+- (void)goBackClick
+{
+    DLog(@"111");
+}
+
+- (void)popClick
+{
+    DLog(@"222");
 }
 
 - (void)didTapBackButton

@@ -25,6 +25,11 @@
         self.window = [[UIWindow alloc] initWithWindowScene:windowScene];
         self.window.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
         [self initWithKeyWindow];
+        //最好先加载完UI代码[self.window makeKeyAndVisible];
+        //通用链接相关代码，用于App被杀死后一键拉起后传递动态参数
+        for (NSUserActivity *userActivity in connectionOptions.userActivities) {
+            
+        }
     }
 }
 
@@ -74,6 +79,14 @@
         DLog(@"context.URL =====%@",context.URL);
     }
 }
+
+
+//通用链接相关代码，用于App退到后台时一键拉起后传递动态参数
+ - (void)scene:(UIScene *)scene continueUserActivity:(NSUserActivity *)userActivity API_AVAILABLE(ios(13.0))
+{
+    
+}
+
 
 - (void)initWithKeyWindow
 {

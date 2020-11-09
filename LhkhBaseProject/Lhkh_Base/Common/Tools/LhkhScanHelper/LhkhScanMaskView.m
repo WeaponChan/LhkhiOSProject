@@ -94,7 +94,7 @@
     [self addSubview:tipImgV];
     self.tipImgV = tipImgV;
     
-    if ([_type isEqualToString:@"lottery"]) {//扫描彩票条码 pdf-417
+    if ([_type isEqualToString:@"pdf417"]) {//扫描彩票条码 pdf-417
         scanImgV.image = Image(@"home_scan_box");
         //设置frame
         self.scanImgV.frame = CGRectMake((self.width - (self.width * 0.93)) * 0.5, (self.height - (self.width * 0.25)) * 0.4, (self.width * 0.93), (self.width * 0.4));
@@ -163,7 +163,7 @@
     animation.removedOnCompletion = NO;
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
     animation.repeatCount = MAXFLOAT;
-    if ([_type isEqualToString:@"lottery"]) {
+    if ([_type isEqualToString:@"pdf417"]) {
         animation.fromValue = [NSValue valueWithCGPoint:CGPointMake(self.center.x, (self.height - (self.width * 0.24)) * 0.4)];
         animation.toValue = [NSValue valueWithCGPoint:CGPointMake(self.center.x, (self.height - (self.width * 0.24)) * 0.4 + self.width * 0.4-5)];
     }else{
@@ -184,7 +184,7 @@
 {
     self.bezier = nil;
     self.bezier = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.width, self.height)];
-    if ([_type isEqualToString:@"lottery"]) {
+    if ([_type isEqualToString:@"pdf417"]) {
         [self.bezier appendPath:[[UIBezierPath bezierPathWithRect:CGRectMake((self.width - (self.width * 0.93)) * 0.5, (self.height - (self.width * 0.25)) * 0.4, self.width * 0.93, self.width * 0.4)] bezierPathByReversingPath]];
     }else{
         [self.bezier appendPath:[[UIBezierPath bezierPathWithRect:CGRectMake((self.width - ((self.width * 0.68))) * 0.5, (self.height - (self.width * 0.68)) * 0.5, (self.width * 0.68), (self.width * 0.68))] bezierPathByReversingPath]];
